@@ -4,81 +4,386 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Zamirah Namayemba | Portfolio</title>
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d0d0d; --surface: #161616; --card: #1c1c1c; --border: #2a2a2a;
+      --gold: #c9a84c; --gold-light: #e8c97a; --text: #f0ede6; --muted: #888; --accent: #4fd1c5;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(13,13,13,0.88); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--gold); letter-spacing: 0.05em; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--gold); }
+
+    .hero {
+      min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; padding: 7rem 6rem 4rem; position: relative; overflow: hidden;
+    }
+    .hero::after {
+      content: ''; position: absolute; right: -10%; top: 10%; width: 600px; height: 600px;
+      border-radius: 50%; background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%); pointer-events: none;
+    }
+    .hero-text { position: relative; z-index: 1; }
+    .hero-eyebrow { font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
+    .hero-eyebrow::before { content: ''; display: block; width: 40px; height: 1px; background: var(--gold); }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 5vw, 5rem); font-weight: 900; line-height: 1.05; margin-bottom: 0.6rem; }
+    .hero h1 em { font-style: italic; color: var(--gold); }
+    .hero-role { font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.8rem; }
+    .hero-role span { color: var(--gold); opacity: 0.6; margin: 0 0.5rem; }
+    .hero-desc { font-size: 0.93rem; line-height: 1.85; color: #aaa; max-width: 420px; margin-bottom: 2.5rem; }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary { background: var(--gold); color: #000; padding: 0.85rem 2rem; border-radius: 2px; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: background 0.3s, transform 0.2s; }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-outline { border: 1px solid var(--border); color: var(--text); padding: 0.85rem 2rem; border-radius: 2px; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: border-color 0.3s, color 0.3s, transform 0.2s; }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+    .hero-image-wrap { display: flex; justify-content: center; align-items: center; position: relative; z-index: 1; }
+    .hero-img-frame { position: relative; width: 340px; height: 420px; }
+    .hero-img-frame::before { content: ''; position: absolute; inset: -12px; border: 1px solid var(--gold); opacity: 0.3; transform: rotate(3deg); transition: transform 0.5s; }
+    .hero-img-frame:hover::before { transform: rotate(0deg); }
+    .hero-img-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top; filter: grayscale(20%); transition: filter 0.4s; }
+    .hero-img-frame:hover img { filter: grayscale(0%); }
+
+    .stats-bar { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; justify-content: center; }
+    .stat { flex: 1; text-align: center; padding: 2rem 3rem; border-right: 1px solid var(--border); }
+    .stat:last-child { border-right: none; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: var(--gold); }
+    .stat-label { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-top: 0.3rem; }
+
+    section { padding: 6rem; position: relative; }
+    .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3.5rem; }
+    .section-num { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 900; color: var(--border); line-height: 1; user-select: none; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; }
+    .section-title span { color: var(--gold); }
+
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .about-text p { color: #aaa; line-height: 1.9; margin-bottom: 1.2rem; font-size: 0.92rem; }
+    .about-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; }
+    .tag { border: 1px solid var(--border); color: var(--muted); padding: 0.35rem 0.9rem; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 2px; transition: border-color 0.3s, color 0.3s; }
+    .tag:hover { border-color: var(--gold); color: var(--gold); }
+
+    .skills-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 2.5rem; }
+    .skill-group { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; transition: border-color 0.3s; }
+    .skill-group:hover { border-color: var(--gold); }
+    .skill-group-title { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border); }
+    .skill-item { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.9rem; font-size: 0.84rem; color: #bbb; }
+    .skill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+
+    .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+    .cert-card { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 1.5rem; text-decoration: none; color: var(--text); display: block; transition: border-color 0.3s, transform 0.2s; }
+    .cert-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .cert-icon { font-size: 1.4rem; margin-bottom: 0.8rem; }
+    .cert-name { font-size: 0.82rem; font-weight: 500; margin-bottom: 0.3rem; }
+    .cert-issuer { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .cert-view { font-size: 0.66rem; color: var(--gold); margin-top: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    .projects-featured { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .projects-secondary { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; }
+    .project-card { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 2rem 2rem 1.5rem; display: flex; flex-direction: column; transition: border-color 0.3s, transform 0.25s; }
+    .project-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+    .project-card.featured { padding: 2.5rem; }
+    .project-num { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; color: var(--border); line-height: 1; margin-bottom: 1rem; transition: color 0.3s; }
+    .project-card:hover .project-num { color: rgba(201,168,76,0.2); }
+    .project-name { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
+    .project-card.featured .project-name { font-size: 1.35rem; }
+    .project-badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.9rem; }
+    .badge { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid rgba(201,168,76,0.3); color: var(--gold); padding: 0.2rem 0.6rem; border-radius: 2px; }
+    .badge.fs { border-color: rgba(79,209,197,0.35); color: var(--accent); }
+    .project-desc { font-size: 0.83rem; color: #888; line-height: 1.7; flex-grow: 1; margin-bottom: 1.5rem; }
+    .project-links { display: flex; gap: 1rem; }
+    .project-link { font-size: 0.67rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(201,168,76,0.3); padding-bottom: 2px; transition: border-color 0.3s; }
+    .project-link:hover { border-color: var(--gold); }
+
+    .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .contact-text h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; }
+    .contact-text p { color: #888; font-size: 0.9rem; line-height: 1.8; }
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-item { display: flex; align-items: center; gap: 1rem; padding: 1.2rem 1.5rem; background: var(--card); border: 1px solid var(--border); border-radius: 4px; text-decoration: none; color: var(--text); transition: border-color 0.3s, transform 0.2s; }
+    .contact-item:hover { border-color: var(--gold); transform: translateX(4px); }
+    .contact-icon { font-size: 1.1rem; }
+    .contact-label { color: var(--muted); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; }
+    .contact-val { font-size: 0.87rem; margin-top: 0.1rem; }
+
+    footer { border-top: 1px solid var(--border); padding: 2rem 6rem; display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 0.72rem; letter-spacing: 0.08em; }
+
+    .fade-in { opacity: 0; transform: translateY(24px); animation: fadeUp 0.8s ease forwards; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    .fade-in:nth-child(1) { animation-delay: 0.1s; }
+    .fade-in:nth-child(2) { animation-delay: 0.25s; }
+    .fade-in:nth-child(3) { animation-delay: 0.4s; }
+    .fade-in:nth-child(4) { animation-delay: 0.55s; }
+    .fade-in:nth-child(5) { animation-delay: 0.7s; }
+
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; }
+      .hero-image-wrap { display: none; }
+      section { padding: 4rem 1.5rem; }
+      .about-grid, .skills-cols, .contact-wrap { grid-template-columns: 1fr; gap: 1.5rem; }
+      .projects-featured, .projects-secondary { grid-template-columns: 1fr; }
+      .stats-bar { flex-direction: column; }
+      .stat { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat:last-child { border-bottom: none; }
+      footer { flex-direction: column; gap: 0.8rem; padding: 2rem 1.5rem; text-align: center; }
+    }
+  </style>
 </head>
 <body>
 
-  <header>
-    <h1 class="hover-name">Zamirah Namayemba</h1>
-    <p>Aspiring Software Developer & Data Analyst</p>
-  </header>
+<nav>
+  <div class="nav-logo">ZN.</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
 
-  <section>
-    <h2>About Me</h2>
-    <div class="card">
-        <img src="images/zam.jpg" alt="Zamirah Namayemba" class="profile-img" />
-      <p>I am pursuing a Degree in Software Development at KCA University and advancing my expertise through a Software Engineering course with Power Learn Project. I hold certifications in Data Science and Artificial Intelligence from IBM, and Cloud Computing from LinkedIn Learning.
-
-I specialize in web development with HTML, CSS, JavaScript, and Python, as well as data analysis using Pandas, NumPy, and Matplotlib. I also have experience with Streamlit and Flask for building applications.
-
-In addition, I bring strong skills in Agile Project Management (Scrum and Kanban), cybersecurity awareness, and Virtual Assistant work — including calendar and email management, client support, and project coordination using Trello, Asana, and Zapier.</p>
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow fade-in">Open to opportunities · Nairobi, Kenya</div>
+    <h1 class="fade-in">Zamirah<br/><em>Namayemba</em></h1>
+    <div class="hero-role fade-in">Full-Stack Developer <span>·</span> Data Analyst <span>·</span> Tech Enthusiast</div>
+    <p class="hero-desc fade-in">I build complete digital products — from polished frontends to robust backends and data-driven insights. KCA University · Power Learn Project · IBM Certified.</p>
+    <div class="hero-cta fade-in">
+      <a href="#projects" class="btn-primary">View My Work</a>
+      <a href="mailto:zamirahkassim@gmail.com" class="btn-outline">Get in Touch</a>
     </div>
-
-   <h2>Skills & Certifications</h2>
-
-<div class="skills-container">
-  <!-- Technical Skills Card -->
-  <div class="card">
-    <h3>💻 Technical Skills</h3>
-    <ul class="skills">
-      <li>🐍 Python – Data Analysis (Pandas, NumPy, Matplotlib) & Web Applications (Streamlit, Flask)</li>
-      <li>🌐 Website Development – HTML, CSS, JavaScript</li>
-      <li>📊 Fundamentals of Data Science – IBM</li>
-      <a href="certificates/IBM Certificate.pdf" target="_blank">Data Science Certificate</a>
-      <li>🤖 Artificial Intelligence – IBM</li>
-      <li>🔐 Cybersecurity Awareness – HP LIFE & HP Foundation</li>
-      <a href="certificates/Cybersecurity certificate.pdf" target="_blank">Cybersecurity Certificate</a>
-      <li>☁️ Cloud Computing (LinkedIn Learning)</li>
-      <a href="certificates/Cloud computing certificate.pdf" target="_blank">Cloud Computing Certificate</a>
-
-      <li>🎨 UI/UX Design (Exploring)</li>
-    </ul>
   </div>
-
-  <!-- Professional Skills Card -->
-  <div class="card">
-    <h3>🧩 Professional Skills</h3>
-    <ul class="skills">
-      <li>🎓 Software Development – Degree (KCA University)</li>
-      <li>⚡ Software Engineering – Power Learn Project</li>
-      <li>📈 Agile Project Management – Scrum & Kanban (HP LIFE & HP Foundation)</li>
-      <a href="certificates/Agile certificate.pdf" target="_blank">Agile Certificate</a>
-      <li>🗂️ Virtual Assistant Skills – Calendar Management, Email Organization, Client Support</li>
-      <li>📂 Project Management Tools – Trello, Asana, Zapier</li>
-    </ul>
+  <div class="hero-image-wrap fade-in">
+    <div class="hero-img-frame">
+      <img src="https://zamzam100.github.io/portfolio/images/zam.jpg" alt="Zamirah Namayemba" />
+    </div>
   </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num">6+</div><div class="stat-label">Projects Built</div></div>
+  <div class="stat"><div class="stat-num">5</div><div class="stat-label">Certifications</div></div>
+  <div class="stat"><div class="stat-num">8+</div><div class="stat-label">Technologies</div></div>
+  <div class="stat"><div class="stat-num">2</div><div class="stat-label">Institutions</div></div>
 </div>
 
-
-    <h2>Projects</h2>
-    <div class="card">
-      <p><strong>Project 1:</strong> Personal Portfolio Website </p>
-      <a href="https://github.com/Zamzam100/portfolio" target="_blank">View Repository</a>
-      <p><strong>Project 2:</strong> Clinic management Web Application</p>
-       <a href="https://github.com/Zamzam100/clinic-app" target="_blank">View Repository</a>
-      <p><strong>Project 3:</strong> Data Analysis Project (Google Colab)</p>
-    <a href="https://github.com/Zamzam100/covid-19-colab" target="_blank">View Repository</a> | 
-    <a href="https://colab.research.google.com/github/Zamzam100/covid-9-colab/blob/main/your_notebook.ipynb" target="_blank">View Notebook</a>
-    <p>Analyzed COVID-19 data using Python (Pandas, Matplotlib, Seaborn) in Google Colab. Visualized trends of cases, recoveries, and fatalities, and derived insights on regional spread patterns.</p>
+<section id="about">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <h2 class="section-title">About <span>Me</span></h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm a Full-Stack Developer and Data Analyst pursuing a Degree in Software Development at KCA University, while advancing through a Software Engineering program with Power Learn Project.</p>
+      <p>I build end-to-end systems — from designing clean, responsive frontends to architecting backend APIs, databases, and data pipelines. My recent work spans e-commerce platforms, healthcare management systems, and data analysis notebooks.</p>
+      <p>I hold certifications in Data Science and AI from IBM, Cloud Computing from LinkedIn Learning, and Cybersecurity Awareness from HP LIFE. I also bring strong Agile project management and Virtual Assistant skills to every team I join.</p>
     </div>
-  </section>
+    <div>
+      <div class="about-tags">
+        <span class="tag">Python</span><span class="tag">Flask</span><span class="tag">SQLite / SQL</span>
+        <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
+        <span class="tag">Streamlit</span><span class="tag">Pandas</span><span class="tag">NumPy</span>
+        <span class="tag">Matplotlib</span><span class="tag">Seaborn</span><span class="tag">Tableau</span>
+        <span class="tag">Scrum</span><span class="tag">Kanban</span><span class="tag">Trello</span>
+        <span class="tag">Asana</span><span class="tag">Zapier</span><span class="tag">UI/UX Design</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <footer>
-    <p>📧 Email <a href="mailto:zamirahkassim@gmail.com">zamirahkassim@gmail.com</a></p>
-    <p>🐙 GitHub: <a href="https://github.com/Zamzam100" target="_blank">Zamzam100</a></p>
-    <p> 📞Phone Number:0748339737</p>
-  </footer>
+<section id="skills" style="background: var(--surface);">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <h2 class="section-title">Skills & <span>Certifications</span></h2>
+  </div>
+  <div class="skills-cols">
+    <div class="skill-group">
+      <div class="skill-group-title">Full-Stack Development</div>
+      <div class="skill-item"><span class="skill-dot"></span>Frontend — HTML, CSS, JavaScript</div>
+      <div class="skill-item"><span class="skill-dot"></span>Backend — Python, Flask</div>
+      <div class="skill-item"><span class="skill-dot"></span>Databases — SQLite, SQL</div>
+      <div class="skill-item"><span class="skill-dot"></span>Web Apps — Streamlit</div>
+      <div class="skill-item"><span class="skill-dot"></span>UI/UX Design (Exploring)</div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Data Analysis</div>
+      <div class="skill-item"><span class="skill-dot"></span>Python — Pandas, NumPy</div>
+      <div class="skill-item"><span class="skill-dot"></span>Visualization — Matplotlib, Seaborn</div>
+      <div class="skill-item"><span class="skill-dot"></span>Tableau — Dashboards & Reports</div>
+      <div class="skill-item"><span class="skill-dot"></span>Google Colab / Jupyter Notebooks</div>
+      <div class="skill-item"><span class="skill-dot"></span>Data Cleaning & Insights</div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Professional Skills</div>
+      <div class="skill-item"><span class="skill-dot"></span>Agile PM — Scrum & Kanban</div>
+      <div class="skill-item"><span class="skill-dot"></span>Virtual Assistant & Client Support</div>
+      <div class="skill-item"><span class="skill-dot"></span>Trello, Asana & Zapier</div>
+      <div class="skill-item"><span class="skill-dot"></span>Cybersecurity Awareness</div>
+      <div class="skill-item"><span class="skill-dot"></span>Cloud Computing</div>
+    </div>
+  </div>
+  <div class="certs-grid">
+    <a class="cert-card" href="https://zamzam100.github.io/portfolio/certificates/IBM Certificate.pdf" target="_blank">
+      <div class="cert-icon">📊</div><div class="cert-name">Fundamentals of Data Science</div>
+      <div class="cert-issuer">IBM</div><div class="cert-view">View Certificate →</div>
+    </a>
+    <a class="cert-card" href="#" target="_blank">
+      <div class="cert-icon">🤖</div><div class="cert-name">Artificial Intelligence</div>
+      <div class="cert-issuer">IBM</div><div class="cert-view">View Certificate →</div>
+    </a>
+    <a class="cert-card" href="https://zamzam100.github.io/portfolio/certificates/Cybersecurity certificate.pdf" target="_blank">
+      <div class="cert-icon">🔐</div><div class="cert-name">Cybersecurity Awareness</div>
+      <div class="cert-issuer">HP LIFE & HP Foundation</div><div class="cert-view">View Certificate →</div>
+    </a>
+    <a class="cert-card" href="https://zamzam100.github.io/portfolio/certificates/Cloud computing certificate.pdf" target="_blank">
+      <div class="cert-icon">☁️</div><div class="cert-name">Cloud Computing</div>
+      <div class="cert-issuer">LinkedIn Learning</div><div class="cert-view">View Certificate →</div>
+    </a>
+    <a class="cert-card" href="https://zamzam100.github.io/portfolio/certificates/Agile certificate.pdf" target="_blank">
+      <div class="cert-icon">📈</div><div class="cert-name">Agile Project Management</div>
+      <div class="cert-issuer">HP LIFE & HP Foundation</div><div class="cert-view">View Certificate →</div>
+    </a>
+  </div>
+</section>
 
-  <script src="script.js"></script>
+<section id="projects">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <h2 class="section-title">Featured <span>Projects</span></h2>
+  </div>
+
+  <div class="projects-featured">
+    <div class="project-card featured">
+      <div class="project-num">01</div>
+      <div class="project-name">Medibase — Pharmacy Management System</div>
+      <div class="project-badges">
+        <span class="badge fs">Full-Stack</span>
+        <span class="badge">Python</span><span class="badge">Flask</span>
+        <span class="badge">SQL</span><span class="badge">HTML/CSS/JS</span>
+      </div>
+      <p class="project-desc">A comprehensive full-stack pharmacy system that streamlines and automates all pharmacy operations — inventory tracking, patient management, prescription handling, and supplier records. Built with Flask, a relational database, and database migrations for production-ready data integrity.</p>
+      <div class="project-links">
+        <a class="project-link" href="https://github.com/Zamzam100/Medibase-Pharmacy-Management-System" target="_blank">GitHub →</a>
+      </div>
+    </div>
+
+    <div class="project-card featured">
+      <div class="project-num">02</div>
+      <div class="project-name">Gleam by Namie — Jewelry E-Commerce</div>
+      <div class="project-badges">
+        <span class="badge fs">Full-Stack</span>
+        <span class="badge">HTML/CSS/JS</span>
+        <span class="badge">E-Commerce</span><span class="badge">Admin Panel</span>
+      </div>
+      <p class="project-desc">A fully functional e-commerce website for a real Nairobi-based jewelry business. Features a product gallery with WhatsApp ordering, Instagram integration, a password-protected owner admin panel for managing products without touching code, and a fully responsive layout for mobile and desktop.</p>
+      <div class="project-links">
+        <a class="project-link" href="https://github.com/Zamzam100/Gleam-by-Namie" target="_blank">GitHub →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="projects-secondary">
+    <div class="project-card">
+      <div class="project-num">03</div>
+      <div class="project-name">ElderCare App</div>
+      <div class="project-badges">
+        <span class="badge fs">Full-Stack</span>
+        <span class="badge">Python</span><span class="badge">SQLite</span><span class="badge">Flask</span>
+      </div>
+      <p class="project-desc">A Python & Flask web application with a SQLite database for managing elder care operations — tracking residents, caregivers, and health data through a structured backend system.</p>
+      <div class="project-links">
+        <a class="project-link" href="https://github.com/Zamzam100/ElderCare" target="_blank">GitHub →</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">04</div>
+      <div class="project-name">COVID-19 Data Analysis</div>
+      <div class="project-badges">
+        <span class="badge">Data Analysis</span>
+        <span class="badge">Python</span><span class="badge">Pandas</span><span class="badge">Seaborn</span>
+      </div>
+      <p class="project-desc">Analyzed global COVID-19 datasets in Google Colab using Pandas, Matplotlib, and Seaborn. Visualized case trends, recovery rates, and fatalities to surface regional spread patterns and data-backed insights.</p>
+      <div class="project-links">
+        <a class="project-link" href="https://github.com/Zamzam100/covid-19-colab" target="_blank">GitHub →</a>
+        <a class="project-link" href="https://colab.research.google.com/github/Zamzam100/covid-9-colab/blob/main/your_notebook.ipynb" target="_blank">Notebook →</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">05</div>
+      <div class="project-name">Clinic Management Web App</div>
+      <div class="project-badges">
+        <span class="badge">Web Dev</span>
+        <span class="badge">HTML/CSS/JS</span>
+      </div>
+      <p class="project-desc">A web application for managing clinic operations — patient records, appointment scheduling, and staff coordination — with a clean, accessible user interface.</p>
+      <div class="project-links">
+        <a class="project-link" href="https://github.com/Zamzam100/clinic-app" target="_blank">GitHub →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="background: var(--surface);">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <h2 class="section-title">Get in <span>Touch</span></h2>
+  </div>
+  <div class="contact-wrap">
+    <div class="contact-text">
+      <h3>Let's work<br/>together.</h3>
+      <p style="margin-top: 1rem;">Whether you have a project in mind, an internship opportunity, or just want to connect — I'd love to hear from you. Based in Nairobi, open to remote work.</p>
+    </div>
+    <div class="contact-links">
+      <a class="contact-item" href="mailto:zamirahkassim@gmail.com">
+        <span class="contact-icon">📧</span>
+        <div><div class="contact-label">Email</div><div class="contact-val">zamirahkassim@gmail.com</div></div>
+      </a>
+      <a class="contact-item" href="https://github.com/Zamzam100" target="_blank">
+        <span class="contact-icon">🐙</span>
+        <div><div class="contact-label">GitHub</div><div class="contact-val">github.com/Zamzam100</div></div>
+      </a>
+      <a class="contact-item" href="https://www.linkedin.com/in/zamirah-namayemba-0779a7262/" target="_blank">
+        <span class="contact-icon">💼</span>
+        <div><div class="contact-label">LinkedIn</div><div class="contact-val">Zamirah Namayemba</div></div>
+      </a>
+      <a class="contact-item" href="https://www.linkedin.com/in/zamirah-namayemba-0779a7262/" target="_blank">
+        <span class="contact-icon">💼</span>
+        <div><div class="contact-label">LinkedIn</div><div class="contact-val">Zamirah Namayemba</div></div>
+      </a>
+      <a class="contact-item" href="https://instagram.com/gleamby.namie" target="_blank">
+        <span class="contact-icon">📸</span>
+        <div><div class="contact-label">Instagram</div><div class="contact-val">@gleamby.namie</div></div>
+      </a>
+      <a class="contact-item" href="tel:+254748339737">
+        <span class="contact-icon">📞</span>
+        <div><div class="contact-label">Phone / WhatsApp</div><div class="contact-val">+254 748 339 737</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 Zamirah Namayemba</div>
+  <div>Full-Stack Developer & Data Analyst · Nairobi, Kenya</div>
+</footer>
+
 </body>
 </html>
